@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>vue-drag-and-drop</title>
+    <style media="screen">
+    [draggable] {
+      -moz-user-select: none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+      user-select: none;
+      /* Required to make elements draggable in old WebKit */
+      -khtml-user-drag: element;
+      -webkit-user-drag: element;
+    }
+    li {
+      color: black;
+    }
+    .dndDragover{
+      background: #ddd;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="" id="example">
+      <ul>
+        <li v-for="item in lists"
+        v-drag-and-drop
+        dnd-draggable="item"
+        dnd-drap="drap"
+        dnd-selected="selected"
+        dnd-drapstart="drapstart"
+        dnd-dragend="dragend"
+        dnd-drapenter="drapenter"
+        dnd-dragleave="dragleave"
+        dnd-drop="drop"
+        >{{item.title}}</li>
+      </ul>
+    </div>
+    <script src="http://cdn.jsdelivr.net/vue/1.0.17/vue.min.js"></script>
+    <script src="../vue-drag-and-drop.js"></script>
+    <script>
+    new Vue({
+      el: '#example',
+      data: {
+        lists: [{title: 'vue'},{title: 'angular'},{title: 'react'},{title: 'avalon'},{title: 'express'}]
+      },
+      methods: {
+        drap: function(){},
+        selected: function(){
+          console.log('selected');
+        },
+        drapstart: function(){},
+        dragend: function(){},
+        drapenter: function(){},
+        dragleave: function(){},
+        drop: function(e){
+          console.log(e);
+        }
+      }
+    })
+    </script>
+  </body>
+</html>
