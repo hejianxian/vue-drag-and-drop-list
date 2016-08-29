@@ -3,7 +3,8 @@
 
   DragAndDropList.install = function(Vue) {
     Vue.directive('dnd-list', {
-      params: [],
+      params: ['dnd-list', 'dnd-allowed-types', 'dnd-disable-if', 'dnd-external-sources', 'dnd-inserted', 'dnd-drop'],
+      // css: placeholder, dragover
       bind: function () {
 
       },
@@ -16,7 +17,8 @@
     });
 
     Vue.directive('dnd-draggable', {
-      params: [],
+      params: ['dnd-draggable', 'dnd-effect-allowed', 'dnd-type', 'dnd-dragstart', 'dnd-selected', 'dnd-dragend', 'dnd-disable-if', 'dnd-moved', 'dnd-canceled'],
+      // css: dragging, draggingSource
       bind: function () {
 
       },
