@@ -46,6 +46,11 @@
           this.el.classList.add("dndDragging");
           this.vm.startIndex = event.target.id;
 
+
+          setTimeout(function(){
+            this.el.classList.add("dndDraggingSource");
+          }.bind(this), 0);
+
           // Try setting a proper drag image if triggered on a dnd-handle (won't work in IE).
           if (event._dndHandle && event.dataTransfer.setDragImage) {
             event.dataTransfer.setDragImage(this.el, 0, 0);
@@ -68,7 +73,7 @@
         // dragover
         this.handleDragover = function(event){
           event = event.originalEvent || event;
-
+          event.dataTransfer.dropEffect = this.vm[this.params.dndEffectAllowed] || "move";
           // todo: placeholder element
 
           event.target.classList.add("dndDragover");
