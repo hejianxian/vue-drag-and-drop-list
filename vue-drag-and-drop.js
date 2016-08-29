@@ -3,6 +3,7 @@
 
   DragAndDrop.install = function(Vue) {
     Vue.directive('drag-and-drop', {
+      twoWay: true,
       params: [
         'dnd-drap',
         'dnd-dragstart',
@@ -30,7 +31,7 @@
         this.handleDragstart = function(event){
           event = event.originalEvent || event;
 
-          var dndDraggable = this.vm[this.params.dndDraggable];
+          var dndDraggable = this.params.dndDraggable;
           console.log(dndDraggable);
           // Check whether the element is draggable, since dragstart might be triggered on a child.
           if (dndDraggable == 'false') return true;
