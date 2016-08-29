@@ -3,9 +3,9 @@
 
   DragAndDrop.install = function(Vue) {
     Vue.directive('drag-and-drop', {
-      twoWay: true,
       params: [
         'dnd-drap',
+        'dnd-index',
         'dnd-dragstart',
         'dnd-dragend',
         'dnd-dragover',
@@ -20,6 +20,7 @@
         'dnd-draggable'],
       bind: function () {
 
+        this.vm.startIndex = 0;
         // drag
         this.handleDrag = function(event){
           if (typeof(this.vm[this.params.dndDrag]) === 'function') {
@@ -31,8 +32,7 @@
         this.handleDragstart = function(event){
           event = event.originalEvent || event;
 
-          var dndDraggable = this.params.dndDraggable;
-          console.log(dndDraggable);
+          var dndDraggable = JSON.stringify(this.params.dndDraggable);
           // Check whether the element is draggable, since dragstart might be triggered on a child.
           if (dndDraggable == 'false') return true;
 
@@ -44,6 +44,7 @@
 
           // Add CSS classes. See documentation above
           this.el.classList.add("dndDragging");
+          this.vm.startIndex = event.target.id;
 
           // Try setting a proper drag image if triggered on a dnd-handle (won't work in IE).
           if (event._dndHandle && event.dataTransfer.setDragImage) {
@@ -52,7 +53,7 @@
 
           // Invoke callback
           if (typeof(this.vm[this.params.dndDragstart]) === 'function') {
-            this.vm[this.params.dndDragstart].call(this, event.target);
+            this.vm[this.params.dndDragstart].call(this, this.params.dndIndex, event.target);
           }
 
           event.stopPropagation();
@@ -60,7 +61,8 @@
 
         // dragend
         this.handleDragend = function(event){
-
+          event = event.originalEvent || event;
+          event.target.classList.remove("dndDragging", "dndDragover");
         }.bind(this);
 
         // dragover
@@ -89,10 +91,15 @@
         // drop
         this.handleDrop = function(event){
           event = event.originalEvent || event;
-          event.target.classList.remove("dndDragover");
+          event.target.classList.remove("dndDragging", "dndDragover");
+
+          var data = event.dataTransfer.getData("Text") || event.dataTransfer.getData("text/plain");
+          var transferredObject = JSON.parse(data);
+          var index = event.target.id;
+
           // Invoke callback
           if (typeof(this.vm[this.params.dndDrop]) === 'function') {
-            this.vm[this.params.dndDrop].call(this, event.target);
+            this.vm[this.params.dndDrop].call(this, this.vm.startIndex, index, transferredObject, event.target);
           }
         }.bind(this);
 

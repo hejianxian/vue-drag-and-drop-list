@@ -16,6 +16,9 @@
     li {
       color: black;
     }
+    .dndDragging{
+      opacity: 0.7;
+    }
     .dndDragover{
       background: #ddd;
     }
@@ -24,12 +27,14 @@
   <body>
     <div class="" id="example">
       <ul>
-        <li v-for="item in lists"
+        <li v-for="item in lists" id="{{$index}}"
         v-drag-and-drop
-        v-bind:dnd-draggable="item"
+        :dnd-draggable="item"
+        :dnd-index="$index"
+        dnd-effect-allowed="copyMove"
         dnd-drap="drap"
         dnd-selected="selected"
-        dnd-drapstart="drapstart"
+        dnd-dragstart="dragstart"
         dnd-dragend="dragend"
         dnd-drapenter="drapenter"
         dnd-dragleave="dragleave"
@@ -50,12 +55,19 @@
         selected: function(){
           console.log('selected');
         },
-        drapstart: function(){},
+        dragstart: function(index){
+          console.log('dragstart');
+          // this.lists.splice(index, 1)
+        },
         dragend: function(){},
         drapenter: function(){},
         dragleave: function(){},
-        drop: function(e){
-          console.log(e);
+        drop: function(start, end, data){
+          console.log(start, end, data);
+          var _data = this.lists[end];
+          console.log(_data);
+          this.lists.$set(end, data);
+          this.lists.$set(start, _data);
         }
       }
     })
