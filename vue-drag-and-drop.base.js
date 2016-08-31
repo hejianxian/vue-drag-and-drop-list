@@ -22,32 +22,6 @@
 
         this.vm.startIndex = 0;
 
-        this.getPlaceholderElement = function() {
-          var placeholder,
-              oldLi = this.el.parentNode.querySelectorAll('.dndPlaceholder');
-          if (oldLi.length > 0) {
-            placeholder = oldLi[0];
-            return placeholder;
-          }
-          var newLi = document.createElement('li');
-          newLi.setAttribute('class', 'dndPlaceholder');
-          newLi.setAttribute('draggable', true);
-          return newLi;
-        }.bind(this);
-
-
-        function isMouseInFirstHalf(event, targetNode) {
-
-          var horizontal = false;
-          var mousePointer = horizontal ? (event.offsetX || event.layerX)
-                                        : (event.offsetY || event.layerY);
-          var targetSize = horizontal ? targetNode.offsetWidth : targetNode.offsetHeight;
-          var targetPosition = horizontal ? targetNode.offsetLeft : targetNode.offsetTop;
-          targetPosition = relativeToParent ? targetPosition : 0;
-          return mousePointer < targetPosition + targetSize / 2;
-        }
-
-
         // drag
         this.handleDrag = function(event){
           if (typeof(this.vm[this.params.dndDrag]) === 'function') {
@@ -96,8 +70,6 @@
           event = event.originalEvent || event;
           event.target.classList.remove("dndDragging", "dndDragover", "dndDraggingSource");
 
-          var placeholderNode = event.target.parentNode.querySelectorAll('.dndPlaceholder')[0];
-          event.target.parentNode.removeChild(placeholderNode);
           // Invoke callback
           if (typeof(this.vm[this.params.dndDragend]) === 'function') {
             this.vm[this.params.dndDragend].call(this, event.target);
@@ -105,20 +77,10 @@
         }.bind(this);
 
         // dragover
-        this.vm.overTime = 0;
         this.handleDragover = function(event){
           event = event.originalEvent || event;
           event.dataTransfer.dropEffect = this.vm[this.params.dndEffectAllowed] || "move";
           // todo: placeholder element
-
-          var placeholder = this.getPlaceholderElement();
-          event.target.parentNode.insertBefore(placeholder, event.target);
-          if (this.vm.overTime === 0) {
-            placeholder.addEventListener('drop', this.handleDrop, false);
-            placeholder.addEventListener('dragover', this.handleDragover, false);
-          }
-          this.vm.overTime++;
-
           event.target.classList.add("dndDragover");
 
           // Invoke callback
@@ -160,19 +122,15 @@
 
           var data = event.dataTransfer.getData("Text") || event.dataTransfer.getData("text/plain");
           var transferredObject = JSON.parse(data);
-          // var index = event.target.id;
-
-          var placeholderNode = event.target.parentNode.querySelectorAll('.dndPlaceholder')[0];
-          var placeholderNodeIndex = Array.prototype.indexOf.call(event.target.parentNode.children, placeholderNode);
-          this.vm.overTime = 0;
+          var index = event.target.id;
 
           // Invoke callback
           if (typeof(this.vm[this.params.dndDrop]) === 'function') {
-            this.vm[this.params.dndDrop].call(this, placeholderNodeIndex, this.vm.startIndex, transferredObject, event.target);
+            this.vm[this.params.dndDrop].call(this, this.vm.startIndex, index, transferredObject, event.target);
           }
 
           // Clean up
-          event.target.parentNode.removeChild(placeholderNode);
+          event.target.parentNode.removeChild(event.target);
           event.stopPropagation();
           return false;
 
