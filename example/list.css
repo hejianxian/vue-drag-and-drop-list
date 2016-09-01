@@ -21,6 +21,11 @@
  * sense to hide it to give the user the feeling
  * that he's actually moving it.
  */
+
+.simpleDemo ul[dnd-list] .dndDragging{
+    opacity: 0.7;
+}
+
 .simpleDemo ul[dnd-list] .dndDraggingSource {
     display: none;
 }
@@ -45,8 +50,7 @@
 .simpleDemo ul[dnd-list] li {
     background-color: #fff;
     border: 1px solid #ddd;
-    border-top-right-radius: 4px;
-    border-top-left-radius: 4px;
+    border-radius: 4px;
     display: block;
     padding: 10px 15px;
     margin-bottom: -1px;

@@ -5,6 +5,127 @@
   var dndDropEffectWorkaround = {}, dndDragTypeWorkaround = {};
 
   DragAndDropList.install = function(Vue) {
+
+    Vue.directive('dnd-draggable', {
+      params: ['dnd-draggable', 'dnd-effect-allowed', 'dnd-type', 'dnd-dragstart', 'dnd-selected', 'dnd-dragend', 'dnd-disable-if', 'dnd-moved', 'dnd-canceled', 'dnd-data', 'dnd-index'],
+      // css: dragging, draggingSource
+      paramWatchers: {
+        dndDisableIf: function (val, oldVal) {
+          this.el.setAttribute('draggable', val);
+        }
+      },
+      bind: function () {
+
+        this.handleDragstart = function (event) {
+          event = event.originalEvent || event;
+
+          var dndDraggable = JSON.stringify(this.params.dndDraggable);
+          // Check whether the element is draggable, since dragstart might be triggered on a child.
+          if (dndDraggable == 'false') return true;
+
+          // Serialize the data associated with this element. IE only supports the Text drag type
+          event.dataTransfer.setData("Text", dndDraggable);
+
+          // Only allow actions specified in dnd-effect-allowed attribute
+          event.dataTransfer.effectAllowed = this.params.dndEffectAllowed || "move";
+
+          // Add CSS classes. See documentation above
+          this.el.classList.add("dndDragging");
+          setTimeout(function() { this.el.classList.add("dndDraggingSource"); }.bind(this), 0);
+
+          // Workarounds for stupid browsers, see description below
+          dndDropEffectWorkaround.dropEffect = "none";
+          dndDragTypeWorkaround.isDragging = true;
+
+          // Save type of item in global state. Usually, this would go into the dataTransfer
+          // typename, but we have to use "Text" there to support IE
+          dndDragTypeWorkaround.dragType = this.params.dndType || undefined;
+
+          // Try setting a proper drag image if triggered on a dnd-handle (won't work in IE).
+          if (event._dndHandle && event.dataTransfer.setDragImage) {
+            event.dataTransfer.setDragImage(this.el[0], 0, 0);
+          }
+
+          // Invoke callback
+          if (typeof(this.vm[this.params.dndDragstart]) === 'function') {
+            this.vm[this.params.dndDragstart].call(this, event.target);
+          }
+
+          event.stopPropagation();
+        }.bind(this);
+
+        this.handleDragend = function () {
+          event = event.originalEvent || event;
+
+          var dropEffect = dndDropEffectWorkaround.dropEffect;
+          switch (dropEffect) {
+            case "move":
+              if (typeof(this.vm[this.params.dndMoved]) === 'function') {
+                this.vm[this.params.dndMoved].call(this, this.params.dndData, this.params.dndIndex, event.target);
+              } else {
+                this.params.dndData.splice(this.params.dndIndex, 1);
+              }
+              break;
+            case "copy":
+              if (typeof(this.vm[this.params.dndCopied]) === 'function') {
+                this.vm[this.params.dndCopied].call(this, event.target);
+              }
+              break;
+            case "none":
+              if (typeof(this.vm[this.params.dndCanceled]) === 'function') {
+                this.vm[this.params.dndCanceled].call(this, event.target);
+              }
+              break;
+          }
+          if (typeof(this.vm[this.params.dndDragend]) === 'function') {
+            this.vm[this.params.dndDragend].call(this, dropEffect, event.target);
+          }
+
+          // Clean up
+          this.el.classList.remove("dndDragging");
+          var _el = this.el;
+          setTimeout(function(){
+            // here this.el will be null
+            _el.classList.remove("dndDraggingSource");
+          }, 0);
+          dndDragTypeWorkaround.isDragging = false;
+          event.stopPropagation();
+        }.bind(this);
+
+        this.handleClick = function (event) {
+          if (!this.params.dndSelected) return;
+
+          event = event.originalEvent || event;
+          if (typeof(this.vm[this.params.dndSelected]) === 'function') {
+            this.vm[this.params.dndSelected].call(this, event.target);
+          }
+          event.stopPropagation();
+        }.bind(this);
+
+        /**
+         * Workaround to make element draggable in IE9
+         */
+        this.handleSelected = function () {
+          if (this.dragDrop) this.dragDrop();
+        }.bind(this);
+
+        this.el.setAttribute('draggable', true);
+        this.el.addEventListener('dragstart', this.handleDragstart, false);
+        this.el.addEventListener('dragend', this.handleDragend, false);
+        this.el.addEventListener('click', this.handleClick, false);
+        this.el.addEventListener('selectstart', this.handleSelected, false);
+      },
+      update: function (newValue, oldValue) {
+
+      },
+      unbind: function () {
+        this.el.removeEventListener('dragstart', this.handleDragstart, false);
+        this.el.removeEventListener('dragend', this.handleDragend, false);
+        this.el.removeEventListener('click', this.handleClick, false);
+        this.el.removeEventListener('selectstart', this.handleSelected, false);
+      }
+    });
+
     Vue.directive('dnd-list', {
       params: ['dnd-list', 'dnd-allowed-types', 'dnd-disable-if', 'dnd-horizontal-list', 'dnd-external-sources', 'dnd-inserted', 'dnd-drop'],
       // css: placeholder, dragover
@@ -19,6 +140,7 @@
 
         this.handleDragenter = function (event) {
           event = event.originalEvent || event;
+          if (!isDropAllowed.call(this, event)) return true;
           event.preventDefault();
         }.bind(this);
 
@@ -37,15 +159,12 @@
             while (listItemNode.parentNode !== listNode && listItemNode.parentNode) {
               listItemNode = listItemNode.parentNode;
             }
-
             if (listItemNode.parentNode === listNode && listItemNode !== placeholderNode) {
               // If the mouse pointer is in the upper half of the child element,
               // we place it before the child element, otherwise below it.
               if (isMouseInFirstHalf(event, listItemNode)) {
-                console.log('listItemNode');
                 listNode.insertBefore(placeholderNode, listItemNode);
               } else {
-                console.log('listItemNode.nextSibling');
                 listNode.insertBefore(placeholderNode, listItemNode.nextSibling);
               }
             }
@@ -76,7 +195,7 @@
           // At this point we invoke the callback, which still can disallow the drop.
           // We can't do this earlier because we want to pass the index of the placeholder.
           if (this.params.dndDragover && !invokeCallback.call(this, 'dndDragover', event, getPlaceholderIndex())) {
-            return stopDragover.call(this);
+            return stopDragover.call(this, event);
           }
 
           this.el.classList.add("dndDragover");
@@ -144,7 +263,7 @@
           event = event.originalEvent || event;
           this.el.classList.remove("dndDragover");
           setTimeout(function() {
-            if (!this.el.className.indexOf("dndDragover") > -1) {
+            if (this.el.className.indexOf("dndDragover") < 0) {
               placeholderNode.parentNode && placeholderNode.parentNode.removeChild(placeholderNode);
             }
           }.bind(this), 100);
@@ -191,7 +310,6 @@
          */
         function isDropAllowed(event) {
           // Disallow drop from external source unless it's allowed explicitly.
-          console.log(!dndDragTypeWorkaround.isDragging && !externalSources);
           if (!dndDragTypeWorkaround.isDragging && !externalSources) return false;
 
           // Check mimetype. Usually we would use a custom drag type instead of Text, but IE doesn't
@@ -259,124 +377,6 @@
         this.el.removeEventListener('dragleave', this.handleDragleave, false);
       }
     });
-
-    Vue.directive('dnd-draggable', {
-      params: ['dnd-draggable', 'dnd-effect-allowed', 'dnd-type', 'dnd-dragstart', 'dnd-selected', 'dnd-dragend', 'dnd-disable-if', 'dnd-moved', 'dnd-canceled', 'dnd-index'],
-      // css: dragging, draggingSource
-      paramWatchers: {
-        dndDisableIf: function (val, oldVal) {
-          this.el.setAttribute('draggable', val);
-        }
-      },
-      acceptStatement: true,
-      bind: function () {
-
-        this.handleDragstart = function (event) {
-          event = event.originalEvent || event;
-
-          var dndDraggable = JSON.stringify(this.params.dndDraggable);
-          // Check whether the element is draggable, since dragstart might be triggered on a child.
-          if (dndDraggable == 'false') return true;
-
-          // Serialize the data associated with this element. IE only supports the Text drag type
-          event.dataTransfer.setData("Text", dndDraggable);
-
-          // Only allow actions specified in dnd-effect-allowed attribute
-          event.dataTransfer.effectAllowed = this.params.dndEffectAllowed || "move";
-
-          // Add CSS classes. See documentation above
-          this.el.classList.add("dndDragging");
-          setTimeout(function() { this.el.classList.add("dndDraggingSource"); }.bind(this), 0);
-
-          // Workarounds for stupid browsers, see description below
-          dndDropEffectWorkaround.dropEffect = "none";
-          dndDragTypeWorkaround.isDragging = true;
-
-          // Save type of item in global state. Usually, this would go into the dataTransfer
-          // typename, but we have to use "Text" there to support IE
-          dndDragTypeWorkaround.dragType = this.params.dndType || undefined;
-
-          // Try setting a proper drag image if triggered on a dnd-handle (won't work in IE).
-          if (event._dndHandle && event.dataTransfer.setDragImage) {
-            event.dataTransfer.setDragImage(this.el[0], 0, 0);
-          }
-
-          // Invoke callback
-          if (typeof(this.vm[this.params.dndDragstart]) === 'function') {
-            this.vm[this.params.dndDragstart].call(this, event.target);
-          }
-
-          event.stopPropagation();
-        }.bind(this);
-
-        this.handleDragend = function () {
-          event = event.originalEvent || event;
-
-          var dropEffect = dndDropEffectWorkaround.dropEffect;
-          switch (dropEffect) {
-            case "move":
-              if (typeof(this.vm[this.params.dndMoved]) === 'function') {
-                this.vm[this.params.dndMoved].call(this, this.params.dndIndex, event.target);
-              }
-              break;
-            case "copy":
-              if (typeof(this.vm[this.params.dndCopied]) === 'function') {
-                this.vm[this.params.dndCopied].call(this, event.target);
-              }
-              break;
-            case "none":
-              if (typeof(this.vm[this.params.dndCanceled]) === 'function') {
-                this.vm[this.params.dndCanceled].call(this, event.target);
-              }
-              break;
-          }
-          if (typeof(this.vm[this.params.dndDragend]) === 'function') {
-            this.vm[this.params.dndDragend].call(this, dropEffect, event.target);
-          }
-
-          // Clean up
-          this.el.classList.remove("dndDragging", "dndDraggingSource");
-          // this.el.classList.remove("dndDraggingSource");
-          // setTimeout(function(){
-          //   this.el.classList.remove("dndDraggingSource");
-          // }.bind(this), 0);
-          dndDragTypeWorkaround.isDragging = false;
-          event.stopPropagation();
-        }.bind(this);
-
-        this.handleClick = function (event) {
-          if (!this.params.dndSelected) return;
-
-          event = event.originalEvent || event;
-          if (typeof(this.vm[this.params.dndSelected]) === 'function') {
-            this.vm[this.params.dndSelected].call(this, event.target);
-          }
-          event.stopPropagation();
-        }.bind(this);
-
-        /**
-         * Workaround to make element draggable in IE9
-         */
-        this.handleSelected = function () {
-          if (this.dragDrop) this.dragDrop();
-        }.bind(this);
-
-        this.el.setAttribute('draggable', true);
-        this.el.addEventListener('dragstart', this.handleDragstart, false);
-        this.el.addEventListener('dragend', this.handleDragend, false);
-        this.el.addEventListener('click', this.handleClick, false);
-        this.el.addEventListener('selectstart', this.handleSelected, false);
-      },
-      update: function (newValue, oldValue) {
-
-      },
-      unbind: function () {
-        this.el.removeEventListener('dragstart', this.handleDragstart, false);
-        this.el.removeEventListener('dragend', this.handleDragend, false);
-        this.el.removeEventListener('click', this.handleClick, false);
-        this.el.removeEventListener('selectstart', this.handleSelected, false);
-      }
-    })
   }
 
   if (typeof exports == "object") {

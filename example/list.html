@@ -16,6 +16,9 @@
         height: 40px;
         line-height: 40px;
       }
+      li.dndDragging{
+        opacity: 0.8;
+      }
     </style>
   </head>
   <body>
@@ -33,7 +36,7 @@
                             <li v-dnd-draggable v-for="item in list"
                                 :dnd-draggable="item"
                                 :dnd-index="$index"
-                                dnd-moved="moved"
+                                :dnd-data="list"
                                 dnd-effect-allowed="move"
                                 dnd-selected="selected = item"
                                 v-class="{'selected': selected === item}"
@@ -80,9 +83,8 @@
         }
       },
       methods: {
-        moved: function(index){
-          console.log(index);
-          this.lists.A.splice(index, 1);
+        moved: function(list, index){
+          list.splice(index, 1);
         }
       }
     })
