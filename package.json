@@ -2,12 +2,14 @@
   "name": "vue-drag-and-drop-list",
   "version": "0.0.10",
   "description": "A Vue.js directives with the HTML5 drag & drop API.",
-  "main": "vue-drag-and-drop-list.js",
+  "main": "dist/vue-drag-and-drop-list.js",
   "directories": {
     "example": "example"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "dev": "rollup -c -w"
   },
   "repository": {
     "type": "git",
@@ -23,5 +25,9 @@
   "bugs": {
     "url": "https://github.com/Alex-fun/vue-drag-and-drop-list/issues"
   },
-  "homepage": "https://github.com/Alex-fun/vue-drag-and-drop-list#readme"
+  "homepage": "https://github.com/Alex-fun/vue-drag-and-drop-list#readme",
+  "devDependencies": {
+    "rollup": "^0.34.13",
+    "rollup-watch": "^2.5.0"
+  }
 }

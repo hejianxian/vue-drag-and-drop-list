@@ -60,8 +60,9 @@
       </div>
     </div>
     <script src="http://cdn.jsdelivr.net/vue/1.0.17/vue.min.js"></script>
-    <script src="../../vue-drag-and-drop-list.js"></script>
+    <script src="../../dist/vue-drag-and-drop-list.js"></script>
     <script>
+    Vue.use(DragAndDropList);
     new Vue({
       el: '#example',
       data: {

@@ -51,43 +51,44 @@
       </div>
     </div>
     <script src="http://cdn.jsdelivr.net/vue/1.0.17/vue.min.js"></script>
-    <script src="../../vue-drag-and-drop-list.js"></script>
+    <script src="../../dist/vue-drag-and-drop-list.js"></script>
     <script>
-    new Vue({
-      el: '#example',
-      data: {
-        "selected": null,
-        "lists": {
-          "A": [
-            {
-              "label": "Item A1"
-            },
-            {
-              "label": "Item A2"
-            },
-            {
-              "label": "Item A3"
-            }
-          ],
-          "B": [
-            {
-              "label": "Item B1"
-            },
-            {
-              "label": "Item B2"
-            },
-            {
-              "label": "Item B3"
-            }
-          ]
+      Vue.use(DragAndDropList);
+      new Vue({
+        el: '#example',
+        data: {
+          "selected": null,
+          "lists": {
+            "A": [
+              {
+                "label": "Item A1"
+              },
+              {
+                "label": "Item A2"
+              },
+              {
+                "label": "Item A3"
+              }
+            ],
+            "B": [
+              {
+                "label": "Item B1"
+              },
+              {
+                "label": "Item B2"
+              },
+              {
+                "label": "Item B3"
+              }
+            ]
+          }
+        },
+        methods: {
+          moved: function(list, index){
+            list.splice(index, 1);
+          }
         }
-      },
-      methods: {
-        moved: function(list, index){
-          list.splice(index, 1);
-        }
-      }
-    })
+      })
     </script>
   </body>
 </html>
