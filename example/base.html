@@ -51,7 +51,7 @@
       </ul>
     </div>
     <script src="http://cdn.jsdelivr.net/vue/1.0.17/vue.min.js"></script>
-    <script src="../vue-drag-and-drop.js"></script>
+    <script src="../vue-drag-and-drop.base.js"></script>
     <script>
     new Vue({
       el: '#example',
@@ -74,12 +74,9 @@
         dragleave: function(){},
         drop: function(start, end, data){
           console.log(start, end, data);
-          // var _data = this.lists[end];
-          // console.log(_data);
-          this.lists.splice(parseInt(end), 1)
-          this.lists.splice(start, 0, data)
-          // this.lists.$set(end, data);
-          // this.lists.$set(start, _data);
+          var _data = this.lists[end];
+          this.lists.$set(start, _data);
+          this.lists.$set(end, data);
         }
       }
     })
