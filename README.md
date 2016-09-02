@@ -46,10 +46,9 @@ doc comming soon！
 
 ```bash
 npm install
-
 npm run dev // rollup watch
 
-npm run build
+npm run build //rollup -c
 ```
 
 ## License
