@@ -5,14 +5,15 @@
 > Vue directives that allow you to build sortable lists with the native HTML5 drag & drop API. It base on [Angular-drag-drop-lists](https://github.com/marceljuenemann/angular-drag-and-drop-lists)
 
 ## Demo
-* [Simple Lists](http://marceljuenemann.github.io/angular-drag-and-drop-lists/demo/#/simple)
-* [Typed Lists](http://marceljuenemann.github.io/angular-drag-and-drop-lists/demo/#/types)
-* [Drag handler](http://marceljuenemann.github.io/angular-drag-and-drop-lists/demo/#/advanced)
+* [Simple Lists](https://hejx.herokuapp.com/vue-dndl/example/simple/list.html)
+* [Typed Lists](https://hejx.herokuapp.com/vue-dndl/example/itemTypes/item-types.html)
+* [Drag handler](https://hejx.herokuapp.com/vue-dndl/example/dragHandle/drag-handle.html)
 
 
 ## Supported browsers
 
 **Touch devices are not supported**, because they do not implement the HTML5 drag & drop standard. However, you can use a [shim](https://github.com/timruffles/ios-html5-drag-drop-shim) to make it work on touch devices as well.
+
 
 ## Installation
 
@@ -39,7 +40,7 @@ you should read the [Vue directive doc](http://vuejs.org/guide/custom-directive.
 * dnd-nodrag
 * dnd-handle
 
-doc coming soon！
+doc comming soon！
 
 ## Development
 
