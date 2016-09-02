@@ -2,7 +2,7 @@
 var DragAndDropList = {};
 
 DragAndDropList.install = function(Vue) {
-  // 存储状态
+  // save status
   var dndDropEffectWorkaround = {}, dndDragTypeWorkaround = {};
 
   Vue.directive('dnd-draggable', {
@@ -42,7 +42,7 @@ DragAndDropList.install = function(Vue) {
 
         // Try setting a proper drag image if triggered on a dnd-handle (won't work in IE).
         if (event._dndHandle && event.dataTransfer.setDragImage) {
-          event.dataTransfer.setDragImage(this.el[0], 0, 0);
+          event.dataTransfer.setDragImage(this.el, 0, 0);
         }
 
         // Invoke callback
@@ -96,7 +96,7 @@ DragAndDropList.install = function(Vue) {
 
         event = event.originalEvent || event;
         if (typeof(this.vm[this.params.dndSelected]) === 'function') {
-          this.vm[this.params.dndSelected].call(this, event.target);
+          this.vm[this.params.dndSelected].call(this, this.params.dndData[this.params.dndIndex], event.target);
         }
         event.stopPropagation();
       }.bind(this);
@@ -114,9 +114,7 @@ DragAndDropList.install = function(Vue) {
       this.el.addEventListener('click', this.handleClick, false);
       this.el.addEventListener('selectstart', this.handleSelected, false);
     },
-    update: function (newValue, oldValue) {
-
-    },
+    update: function (newValue, oldValue) {},
     unbind: function () {
       this.el.removeEventListener('dragstart', this.handleDragstart, false);
       this.el.removeEventListener('dragend', this.handleDragend, false);
@@ -366,9 +364,7 @@ DragAndDropList.install = function(Vue) {
       }
 
     },
-    update: function (newValue, oldValue) {
-
-    },
+    update: function (newValue, oldValue) {},
     unbind: function () {
       this.el.removeEventListener('dragenter', this.handleDragenter, false);
       this.el.removeEventListener('dragover', this.handleDragover, false);
@@ -376,6 +372,60 @@ DragAndDropList.install = function(Vue) {
       this.el.removeEventListener('dragleave', this.handleDragleave, false);
     }
   });
+
+  Vue.directive('dnd-nodrag', {
+    bind: function () {
+
+      this.handleDragstart = function (event) {
+        event = event.originalEvent || event;
+
+        if (!event._dndHandle) {
+          // If a child element already reacted to dragstart and set a dataTransfer object, we will
+          // allow that. For example, this is the case for user selections inside of input elements.
+          if (!(event.dataTransfer.types && event.dataTransfer.types.length)) {
+            event.preventDefault();
+          }
+          event.stopPropagation();
+        }
+      }.bind(this);
+
+      this.handleDragend = function (event) {
+        event = event.originalEvent || event;
+        if (!event._dndHandle) {
+          event.stopPropagation();
+        }
+      }.bind(this);
+
+      this.el.setAttribute('draggable', true);
+      this.el.addEventListener('dragstart', this.handleDragstart, false);
+      this.el.addEventListener('dragend', this.handleDragend, false);
+    },
+    update: function (newValue, oldValue) {},
+    unbind: function () {
+      this.el.removeEventListener('dragstart', this.handleDragstart, false);
+      this.el.removeEventListener('dragend', this.handleDragend, false);
+    }
+  });
+
+  Vue.directive('dnd-handle', {
+    bind: function () {
+
+      this.handle = function(event){
+        event = event.originalEvent || event;
+        event._dndHandle = true;
+      }.bind(this);
+
+      this.el.setAttribute('draggable', true);
+      this.el.addEventListener('dragstart', this.handle, false);
+      this.el.addEventListener('dragend', this.handle, false);
+    },
+    update: function (newValue, oldValue) {},
+    unbind: function () {
+      this.el.removeEventListener('dragstart', this.handle, false);
+      this.el.removeEventListener('dragend', this.handle, false);
+    }
+  });
+
 };
 
 export default DragAndDropList;

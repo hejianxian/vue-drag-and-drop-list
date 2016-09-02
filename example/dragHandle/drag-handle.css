@@ -1,0 +1,89 @@
+/**
+ * For the correct positioning of the placeholder element, the dnd-list and
+ * it's children must have position: relative
+ */
+.handleDemo ul[dnd-list],
+.handleDemo ul[dnd-list] > li {
+  position: relative;
+}
+
+/**
+ * The dnd-list should always have a min-height,
+ * otherwise you can't drop to it once it's empty
+ */
+.handleDemo ul[dnd-list] {
+  min-height: 42px;
+  padding-left: 0px;
+}
+
+/**
+ * The dndDraggingSource class will be applied to
+ * the source element of a drag operation. It makes
+ * sense to hide it to give the user the feeling
+ * that he's actually moving it.
+ */
+.handleDemo ul[dnd-list] .dndDraggingSource {
+  display: none;
+}
+
+/**
+ * An element with .dndPlaceholder class will be
+ * added to the dnd-list while the user is dragging
+ * over it.
+ */
+.handleDemo ul[dnd-list] .dndPlaceholder {
+  display: block;
+  background-color: #ddd;
+  text-align: center;
+  min-height: 40px;
+}
+
+/**
+ * The dnd-lists's child elements currently MUST have
+ * position: relative. Otherwise we can not determine
+ * whether the mouse pointer is in the upper or lower
+ * half of the element we are dragging over. In other
+ * browsers we can use event.offsetY for this.
+ */
+.handleDemo ul[dnd-list] li {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  display: block;
+  margin-bottom: -1px;
+
+  /* Disable text selection if item is not draggable */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.handleDemo ul[dnd-list] li dnd-nodrag {
+  display: block;
+  padding: 10px 15px;
+}
+
+/**
+ * Gender-specifc background
+ */
+.handleDemo ul[dnd-list] li.background-man {
+  color: blue;
+}
+
+.handleDemo ul[dnd-list] li.background-woman {
+  color: red;
+}
+
+/**
+ * Handle
+ */
+.handleDemo .handle {
+  cursor: move;
+  text-align: center;
+}
+
+.handleDemo .name {
+
+}

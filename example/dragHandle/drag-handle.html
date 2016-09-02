@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>vue-drag-and-drop-list</title>
-    <link rel="stylesheet" href="list.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="drag-handle.css" media="screen" title="no title" charset="utf-8">
     <style media="screen">
       .row{
         display: flex;;
@@ -15,6 +15,17 @@
       li{
         height: 40px;
         line-height: 40px;
+        display: flex;
+      }
+      .nodrag{
+        flex: 1;
+        display: flex;
+      }
+      .handle{
+        flex: 1;
+      }
+      .name{
+        flex: 5;
       }
       li.dndDragging{
         opacity: 0.8;
@@ -23,8 +34,8 @@
   </head>
   <body>
     <div class="" id="example">
-      <h1>Demo: Simple Lists</h1>
-      <div class="simpleDemo">
+      <h1>Demo: handleDemo</h1>
+      <div class="handleDemo">
           <div class="row">
               <div v-for="(listName, list) in lists" class="col-md-6">
                   <div class="panel panel-info">
@@ -40,7 +51,12 @@
                                 dnd-effect-allowed="move"
                                 v-class="{'selected': selected === item}"
                                 >
-                                {{item.label}}
+                                <div v-dnd-nodrag class="nodrag">
+                                  <div v-dnd-handle class="handle">:::</div>
+                                  <div class="name">
+                                      {{item.label}}
+                                  </div>
+                                </div>
                             </li>
                         </ul>
                       </div>
@@ -56,7 +72,6 @@
       new Vue({
         el: '#example',
         data: {
-          "selected": null,
           "lists": {
             "A": [
               {
@@ -80,6 +95,11 @@
                 "label": "Item B3"
               }
             ]
+          }
+        },
+        methods: {
+          moved: function(list, index){
+            list.splice(index, 1);
           }
         }
       })
