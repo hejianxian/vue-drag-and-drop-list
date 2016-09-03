@@ -12,6 +12,8 @@
 
 ## Supported browsers
 
+IE9+ and all modern browsers are supported.
+
 **Touch devices are not supported**, because they do not implement the HTML5 drag & drop standard. However, you can use a [shim](https://github.com/timruffles/ios-html5-drag-drop-shim) to make it work on touch devices as well.
 
 
@@ -24,9 +26,10 @@ npm install vue-drag-and-drop-list --save
 ## Usage
 
 ```js
-import Vue from 'vue'
-import vueDragAndDropList from 'vue-drag-and-drop-list'
-Vue.use(vueDragAndDropList)
+import Vue from 'vue';
+import vueDragAndDropList from 'vue-drag-and-drop-list';
+
+Vue.use(vueDragAndDropList);
 ```
 
 or include as an inline script, like example.
