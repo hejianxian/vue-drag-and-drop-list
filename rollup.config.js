@@ -15,8 +15,7 @@ export default {
     {
       dest: pkg['main'],
       format: 'umd',
-      moduleName: 'DragAndDropList',
-      useStrict: false // support ie10
+      moduleName: 'DragAndDropList'
     }
   ]
 };

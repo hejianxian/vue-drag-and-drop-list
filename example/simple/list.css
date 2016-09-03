@@ -13,6 +13,7 @@
  */
 .simpleDemo ul[dnd-list] {
     padding-left: 0px;
+		min-height: 40px;
 }
 
 /**

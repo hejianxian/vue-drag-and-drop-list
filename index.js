@@ -28,9 +28,9 @@ DragAndDropList.install = function(Vue) {
         // Only allow actions specified in dnd-effect-allowed attribute
         event.dataTransfer.effectAllowed = this.params.dndEffectAllowed || "move";
 
-        // Add CSS classes. See documentation above
-        this.el.classList.add("dndDragging");
-        setTimeout(function() { this.el.classList.add("dndDraggingSource"); }.bind(this), 0);
+        // Add CSS classes. IE9 not support 'classList'
+        this.el.className += " dndDragging";
+        setTimeout(function() { this.el.className += " dndDraggingSource "; }.bind(this), 0);
 
         // Workarounds for stupid browsers, see description below
         dndDropEffectWorkaround.dropEffect = "none";
@@ -53,7 +53,7 @@ DragAndDropList.install = function(Vue) {
         event.stopPropagation();
       }.bind(this);
 
-      this.handleDragend = function () {
+      this.handleDragend = function (event) {
         event = event.originalEvent || event;
 
         var dropEffect = dndDropEffectWorkaround.dropEffect;
@@ -81,11 +81,11 @@ DragAndDropList.install = function(Vue) {
         }
 
         // Clean up
-        this.el.classList.remove("dndDragging");
+        this.el.className = this.el.className.replace("dndDragging", "");
         var _el = this.el;
         setTimeout(function(){
           // here this.el will be null
-          _el.classList.remove("dndDraggingSource");
+          _el.className = _el.className.replace("dndDraggingSource", "");
         }, 0);
         dndDragTypeWorkaround.isDragging = false;
         event.stopPropagation();
@@ -103,10 +103,12 @@ DragAndDropList.install = function(Vue) {
 
       /**
        * Workaround to make element draggable in IE9
+       * http://stackoverflow.com/questions/5500615/internet-explorer-9-drag-and-drop-dnd
        */
       this.handleSelected = function () {
         if (this.dragDrop) this.dragDrop();
-      }.bind(this);
+        return false;
+      }
 
       this.el.setAttribute('draggable', true);
       this.el.addEventListener('dragstart', this.handleDragstart, false);
@@ -142,6 +144,7 @@ DragAndDropList.install = function(Vue) {
       }.bind(this);
 
       this.handleDragover = function (event) {
+
         event = event.originalEvent || event;
 
         if (!isDropAllowed.call(this, event)) return true;
@@ -195,14 +198,15 @@ DragAndDropList.install = function(Vue) {
           return stopDragover.call(this, event);
         }
 
-        this.el.classList.add("dndDragover");
+        if (this.el.className.indexOf("dndDragover") < 0) this.el.className += " dndDragover";
+
         event.preventDefault();
         event.stopPropagation();
         return false;
       }.bind(this);
 
 
-      this.handleDrop = function () {
+      this.handleDrop = function (event) {
         event = event.originalEvent || event;
 
         if (!isDropAllowed.call(this, event)) return true;
@@ -258,7 +262,7 @@ DragAndDropList.install = function(Vue) {
       // drag leave
       this.handleDragleave = function (event) {
         event = event.originalEvent || event;
-        this.el.classList.remove("dndDragover");
+        this.el.className = this.el.className.replace("dndDragover", "");
         setTimeout(function() {
           if (this.el.className.indexOf("dndDragover") < 0) {
             placeholderNode.parentNode && placeholderNode.parentNode.removeChild(placeholderNode);
@@ -279,6 +283,7 @@ DragAndDropList.install = function(Vue) {
         var targetSize = horizontal ? targetNode.offsetWidth : targetNode.offsetHeight;
         var targetPosition = horizontal ? targetNode.offsetLeft : targetNode.offsetTop;
         targetPosition = relativeToParent ? targetPosition : 0;
+        console.log(mousePointer, targetPosition, (targetSize));
         return mousePointer < targetPosition + targetSize / 2;
       };
 
@@ -333,7 +338,7 @@ DragAndDropList.install = function(Vue) {
        */
       function stopDragover() {
         placeholderNode.parentNode && placeholderNode.parentNode.removeChild(placeholderNode);
-        this.el.classList.remove("dndDragover");
+        this.el.className = this.el.className.replace("dndDragover", "");
         return true;
       }
 

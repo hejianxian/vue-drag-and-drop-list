@@ -38,7 +38,7 @@
                                 :dnd-index="$index"
                                 :dnd-data="list"
                                 dnd-effect-allowed="move"
-                                v-class="{'selected': selected === item}"
+                                v-bind:class="{'selected': selected === item}"
                                 >
                                 {{item.label}}
                             </li>
@@ -49,7 +49,7 @@
           </div>
       </div>
     </div>
-    <script src="//cdn.jsdelivr.net/vue/1.0.17/vue.min.js"></script>
+    <script src="//cdn.bootcss.com/vue/1.0.26/vue.js"></script>
     <script src="../../dist/vue-drag-and-drop-list.js"></script>
     <script>
       Vue.use(DragAndDropList);
