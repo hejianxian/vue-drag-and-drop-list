@@ -5,9 +5,9 @@
 > Vue directives that allow you to build sortable lists with the native HTML5 drag & drop API. It base on [Angular-drag-drop-lists](https://github.com/marceljuenemann/angular-drag-and-drop-lists)
 
 ## Demo
-* [Simple Lists](https://hejx.herokuapp.com/vue-dndl/example/simple/list.html)
-* [Typed Lists](https://hejx.herokuapp.com/vue-dndl/example/itemTypes/item-types.html)
-* [Drag handler](https://hejx.herokuapp.com/vue-dndl/example/dragHandle/drag-handle.html)
+* [Simple Lists](https://hejx.herokuapp.com/vue-dndl/#!/simple)
+* [Typed Lists](https://hejx.herokuapp.com/vue-dndl/#!/item-types)
+* [Drag handler](https://hejx.herokuapp.com/vue-dndl/#!/handler)
 
 
 ## Supported browsers
@@ -53,6 +53,15 @@ npm run dev // rollup watch
 
 npm run build //rollup -c
 ```
+
+## Run Demo
+
+```bash
+cd demo
+// vue project
+npm run dev // webpack
+```
+See all demos source code in 'views/*.vue' file.
 
 ## License
 
