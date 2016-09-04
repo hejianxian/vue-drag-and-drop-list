@@ -295,7 +295,6 @@ DragAndDropList.install = function(Vue) {
         var targetSize = horizontal ? targetNode.offsetWidth : targetNode.offsetHeight;
         var targetPosition = horizontal ? targetNode.offsetLeft : targetNode.offsetTop;
         targetPosition = relativeToParent ? targetPosition : 0;
-        console.log(mousePointer, targetPosition, (targetSize));
         return mousePointer < targetPosition + targetSize / 2;
       };
 
