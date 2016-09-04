@@ -58,7 +58,9 @@ npm run build //rollup -c
 
 ```bash
 cd demo
+
 // vue project
+npm install
 npm run dev // webpack
 ```
 See all demos source code in 'views/*.vue' file.
