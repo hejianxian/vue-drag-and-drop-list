@@ -7,7 +7,8 @@
 ## Demo
 * [Simple Lists](https://hejx.herokuapp.com/vue-dndl/#!/simple)
 * [Typed Lists](https://hejx.herokuapp.com/vue-dndl/#!/item-types)
-* [Drag handler](https://hejx.herokuapp.com/vue-dndl/#!/handler)
+* [Drag Handler](https://hejx.herokuapp.com/vue-dndl/#!/handler)
+* [Horizontal Items](https://hejx.herokuapp.com/vue-dndl/#!/horizontal)
 
 
 ## Supported browsers
