@@ -17,7 +17,8 @@
             <ul>
               <li><a v-link="{ path: '/simple' }">Simple Demo</a></li>/
               <li><a v-link="{ path: '/item-types' }">Item Types</a></li>/
-              <li><a v-link="{ path: '/handler' }">Handler</a></li>
+              <li><a v-link="{ path: '/handler' }">Handler</a></li>/
+              <li><a v-link="{ path: '/horizontal' }">Horizontal</a></li>
             </ul>
           </nav>
         </div>
@@ -51,7 +52,7 @@ Vue.use(VueDragAndDropList);
     <div class="footer">
       <div class="container">
         <div class="demo-nav">
-          <h3 class="center"># End</h3>
+          <h3 class="center"># Footer</h3>
         </div>
         <p>
           Designed and built by <a href="https://github.com/Alex-fun" target="_blank">Hejx</a>.
@@ -135,6 +136,10 @@ pre{
     }
   }
 }
+.alert{
+  margin-left: 15px;
+  margin-right: 15px;
+}
 
 nav.menus{
   height: 40px;
@@ -160,6 +165,7 @@ nav.menus{
     color: #35495E;
     margin: 0;
     line-height: 34px;
+    font-size: 20px;
   }
   .menus{
     margin-left: 20px;

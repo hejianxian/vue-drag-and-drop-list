@@ -11,6 +11,10 @@ export default (router) => router.map({
     name: 'handler',
     component: require('./views/handler')
   },
+  '/horizontal': {
+    name: 'horizontal',
+    component: require('./views/horizontal')
+  },
   '*': {
     component: require('./views/simple'),
   }

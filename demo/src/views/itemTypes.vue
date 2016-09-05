@@ -1,5 +1,8 @@
 <template>
   <div class="typesDemo row">
+    <div class="alert alert-success">
+      Instructions: Drag & drop the names to move them around. Note that the names can not be dropped in the list for the wrong gender. This is achieved with the dnd-type and dnd-allowed-types attributes.
+    </div>
     <div v-for="list in lists" class="col-md-4">
       <div class="panel panel-vue">
         <div class="panel-heading">

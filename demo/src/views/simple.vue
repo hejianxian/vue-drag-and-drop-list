@@ -1,5 +1,6 @@
 <template>
   <div class="row simpleDemo">
+    <div class="alert alert-success" role="alert">Instructions: Drag & drop the list items to move them around.</div>
       <div v-for="(listName, list) in lists" class="col-md-4">
           <div class="panel panel-vue">
               <div class="panel-heading">

@@ -49,7 +49,7 @@ doc comming soon！
 
 ```bash
 npm install
-npm run dev // rollup watch
+npm run watch // rollup watch
 
 npm run build //rollup -c
 ```
