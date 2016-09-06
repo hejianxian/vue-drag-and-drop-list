@@ -180,6 +180,9 @@ nav.menus{
 
 .panel.panel-vue{
   border-color: @base-color;
+  &.padding{
+    margin: 15px;
+  }
   .panel-body{
     padding: 0;
     li{

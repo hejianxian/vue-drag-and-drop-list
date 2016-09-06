@@ -1,23 +1,43 @@
 <template lang="html">
   <div class="row horizontal">
     <div class="alert alert-success" role="alert">Instructions: Drag & drop the horizontal items to move them around.</div>
-      <div v-for="(listName, list) in lists" class="col-md-4">
+      <div v-for="container in lists" class="col-md-4">
           <div class="panel panel-vue">
               <div class="panel-heading">
-                  <h3 class="panel-title">List {{listName}}</h3>
+                  <h3 class="panel-title">Dropzone {{$index+1}}</h3>
               </div>
-              <div class="panel-body">
-                <ul v-dnd-list :dnd-list="list" :dnd-horizontal-list="true">
-                    <li v-dnd-draggable v-for="item in list"
-                        :dnd-draggable="item"
-                        :dnd-index="$index"
-                        :dnd-data="list"
-                        dnd-effect-allowed="move"
-                        v-bind:class="{'selected': selected === item}"
-                        >
-                        {{item.label}}
-                    </li>
-                </ul>
+              <ul class="panel-body container-list"
+                  v-dnd-list
+                  :dnd-list="container"
+                  :dnd-allowed-types="['containerType']"
+                  :dnd-external-sources="true">
+                <li class="panel panel-vue padding"
+                    v-for="list in container"
+                    v-dnd-draggable
+                    :dnd-draggable="list"
+                    :dnd-index="$index"
+                    :dnd-data="container"
+                    :dnd-type="'containerType'"
+                    dnd-effect-allowed="copyMove">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">container {{$index+1}}</h3>
+                    </div>
+                    <div class="panel-body">
+                      <ul v-dnd-list class="item-list"
+                          :dnd-list="list"
+                          :dnd-horizontal-list="true"
+                          :dnd-allowed-types="['itemType']"
+                          :dnd-external-sources="true">
+                        <li v-for="item in list" class="item"
+                            v-dnd-draggable
+                            :dnd-draggable="item"
+                            :dnd-type="'itemType'"
+                            dnd-effect-allowed="copyMove"
+                            :dnd-index="$index"
+                            :dnd-data="list">{{item.label}}</li>
+                      </ul>
+                    </div>
+                </div>
               </div>
           </div>
       </div>
@@ -27,79 +47,19 @@
 <script>
 export default {
   data() {
-    return {
-      "selected": null,
-      "lists": {
-        "A": [
-          {
-            "label": "Item A1"
-          },
-          {
-            "label": "Item A2"
-          },
-          {
-            "label": "Item A3"
-          },
-          {
-            "label": "Item A5"
-          },
-          {
-            "label": "Item A6"
-          },
-          {
-            "label": "Item A7"
-          },
-          {
-            "label": "Item A8"
-          },
-          {
-            "label": "Item A9"
-          }
-        ],
-        "B": [
-          {
-            "label": "Item B1"
-          },
-          {
-            "label": "Item B2"
-          },
-          {
-            "label": "Item B3"
-          },
-          {
-            "label": "Item B4"
-          },
-          {
-            "label": "Item B5"
-          },
-          {
-            "label": "Item B6"
-          },
-          {
-            "label": "Item B7"
-          }
-        ],
-        "C": [
-          {
-            "label": "Item C1"
-          },
-          {
-            "label": "Item C2"
-          },
-          {
-            "label": "Item C3"
-          },
-          {
-            "label": "Item C4"
-          },
-          {
-            "label": "Item C5"
-          },
-          {
-            "label": "Item C6"
-          }
-        ]
+    let lists = [];
+    let id = 10;
+    for(var i = 0; i < 3; i++) {
+      lists.push([]);
+      for(var j = 0; j < 2; j++) {
+        lists[i].push([]);
+        for(var k = 0; k < 7; k++) {
+          lists[i][j].push({"label": "Item " + id++});
+        }
       }
+    }
+    return {
+      "lists": lists
     };
   },
   computed: {},
@@ -116,7 +76,7 @@ export default {
  * it's children must have position: relative
  */
 .horizontal ul[dnd-list],
-.horizontal ul[dnd-list] > li {
+.horizontal ul[dnd-list] > li{
 	position: relative;
 }
 
@@ -140,7 +100,8 @@ export default {
     opacity: 0.7;
 }
 
-.horizontal ul[dnd-list] .dndDraggingSource {
+.horizontal ul[dnd-list] .dndDraggingSource,
+.horizontal .item-list .item.dndDraggingSource {
     display: none;
 }
 
@@ -155,6 +116,19 @@ export default {
     min-height: 41px;
 }
 
+.horizontal .container-list .dndPlaceholder{
+  height: 100px;
+}
+
+.horizontal .item-list .dndPlaceholder{
+  width: 50px;
+  height: 50px;
+  margin: 10px;
+  padding: 5px;
+  float: left;
+  border-radius: 4px;
+}
+
 /**
  * The dnd-lists's child elements currently MUST have
  * position: relative. Otherwise we can not determine
@@ -162,7 +136,7 @@ export default {
  * half of the element we are dragging over. In other
  * browsers we can use event.offsetY for this.
  */
-.horizontal ul[dnd-list] li {
+.horizontal .item-list li.item {
     color: #fff;
     display: block;
     width: 50px;

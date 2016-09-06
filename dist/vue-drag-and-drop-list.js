@@ -26,7 +26,7 @@ DragAndDropList.install = function(Vue) {
       }
     },
     bind: function () {
-
+      
       this.handleDragstart = function (event) {
         event = event.originalEvent || event;
 

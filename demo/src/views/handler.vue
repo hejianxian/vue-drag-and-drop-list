@@ -1,7 +1,7 @@
 <template>
   <div class="row handleDemo">
     <div class="alert alert-success">
-      Instructions: Drag & drop the handler to move them around. 
+      Instructions: Drag & drop the handler to move them around.
     </div>
       <div v-for="(listName, list) in lists" class="col-md-4">
           <div class="panel panel-vue">
@@ -33,7 +33,7 @@
 
 <script>
 export default {
-  data(){
+  data(){    
     return {
       "lists": {
         "A": [
