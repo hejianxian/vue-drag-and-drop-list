@@ -5,6 +5,7 @@
 > Vue directives that allow you to build sortable lists with the native HTML5 drag & drop API. Supports nested lists for building trees and other fancy structures.
 
 ## Demo
+* [Nested Containers](https://hejx.herokuapp.com/vue-dndl/#!/)
 * [Simple Lists](https://hejx.herokuapp.com/vue-dndl/#!/simple)
 * [Typed Lists](https://hejx.herokuapp.com/vue-dndl/#!/item-types)
 * [Drag Handler](https://hejx.herokuapp.com/vue-dndl/#!/handler)
@@ -65,6 +66,10 @@ npm install
 npm run dev // webpack
 ```
 See all demos source code in 'views/*.vue' file.
+
+## Thank
+
+[angular-drag-and-drop-lists](https://github.com/marceljuenemann/angular-drag-and-drop-lists)
 
 ## License
 
