@@ -34,7 +34,7 @@ import vueDragAndDropList from 'vue-drag-and-drop-list';
 Vue.use(vueDragAndDropList);
 ```
 
-or include as an inline script, like example.
+or include as an inline script.
 
 ## Directives
 
