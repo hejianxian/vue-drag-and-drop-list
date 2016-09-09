@@ -1,5 +1,9 @@
 export default (router) => router.map({
   '/': {
+    name: 'nested',
+    component: require('./views/nestedContainers')
+  },
+  '/simple': {
     name: 'simple',
     component: require('./views/simple')
   },
@@ -16,6 +20,6 @@ export default (router) => router.map({
     component: require('./views/horizontal')
   },
   '*': {
-    component: require('./views/simple'),
+    component: require('./views/nestedContainers'),
   }
 });

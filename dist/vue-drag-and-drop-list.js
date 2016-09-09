@@ -18,7 +18,7 @@ DragAndDropList.install = function(Vue) {
   var dndDropEffectWorkaround = {}, dndDragTypeWorkaround = {};
 
   Vue.directive('dnd-draggable', {
-    params: ['dnd-draggable', 'dnd-effect-allowed', 'dnd-type', 'dnd-dragstart', 'dnd-selected', 'dnd-dragend', 'dnd-disable-if', 'dnd-moved', 'dnd-canceled', 'dnd-data', 'dnd-index'],
+    params: ['dnd-draggable', 'dnd-effect-allowed', 'dnd-type', 'dnd-dragstart', 'dnd-selected', 'dnd-dragend', 'dnd-disable-if', 'dnd-moved', 'dnd-copied', 'dnd-canceled', 'dnd-data', 'dnd-index'],
     // css: dragging, draggingSource
     paramWatchers: {
       dndDisableIf: function (val, oldVal) {
@@ -26,7 +26,7 @@ DragAndDropList.install = function(Vue) {
       }
     },
     bind: function () {
-      
+
       this.handleDragstart = function (event) {
         event = event.originalEvent || event;
 
@@ -41,8 +41,8 @@ DragAndDropList.install = function(Vue) {
         event.dataTransfer.effectAllowed = this.params.dndEffectAllowed || "move";
 
         // Add CSS classes. IE9 not support 'classList'
-        this.el.className += " dndDragging";
-        setTimeout(function() { this.el.className += " dndDraggingSource "; }.bind(this), 0);
+        this.el.className = this.el.className.trim() + " dndDragging";
+        setTimeout(function() { this.el.className = this.el.className.trim() + " dndDraggingSource"; }.bind(this), 0);
 
         // Workarounds for stupid browsers, see description below
         dndDropEffectWorkaround.dropEffect = "none";
@@ -79,7 +79,7 @@ DragAndDropList.install = function(Vue) {
             break;
           case "copy":
             if (typeof(this.vm[this.params.dndCopied]) === 'function') {
-              this.vm[this.params.dndCopied].call(this, event.target);
+              this.vm[this.params.dndCopied].call(this, this.params.dndDraggable, event.target);
             }
             break;
           case "none":
@@ -93,11 +93,11 @@ DragAndDropList.install = function(Vue) {
         }
 
         // Clean up
-        this.el.className = this.el.className.replace("dndDragging", "");
+        this.el.className = this.el.className.replace("dndDragging", "").trim();
         var _el = this.el;
         setTimeout(function(){
           // here this.el will be null
-          _el.className = _el.className.replace("dndDraggingSource", "");
+          _el.className = _el.className.replace("dndDraggingSource", "").trim();
         }, 0);
         dndDragTypeWorkaround.isDragging = false;
         event.stopPropagation();
@@ -210,13 +210,12 @@ DragAndDropList.install = function(Vue) {
           return stopDragover.call(this, event);
         }
 
-        if (this.el.className.indexOf("dndDragover") < 0) this.el.className += " dndDragover";
+        if (this.el.className.indexOf("dndDragover") < 0) this.el.className = this.el.className.trim() + " dndDragover";
 
         event.preventDefault();
         event.stopPropagation();
         return false;
       }.bind(this);
-
 
       this.handleDrop = function (event) {
         event = event.originalEvent || event;
@@ -274,7 +273,7 @@ DragAndDropList.install = function(Vue) {
       // drag leave
       this.handleDragleave = function (event) {
         event = event.originalEvent || event;
-        this.el.className = this.el.className.replace("dndDragover", "");
+        this.el.className = this.el.className.replace("dndDragover", "").trim();
         setTimeout(function() {
           if (this.el.className.indexOf("dndDragover") < 0) {
             placeholderNode.parentNode && placeholderNode.parentNode.removeChild(placeholderNode);
@@ -349,7 +348,7 @@ DragAndDropList.install = function(Vue) {
        */
       function stopDragover() {
         placeholderNode.parentNode && placeholderNode.parentNode.removeChild(placeholderNode);
-        this.el.className = this.el.className.replace("dndDragover", "");
+        this.el.className = this.el.className.replace("dndDragover", "").trim();
         return true;
       }
 
@@ -357,7 +356,7 @@ DragAndDropList.install = function(Vue) {
        * Invokes a callback with some interesting parameters and returns the callbacks return value.
        */
       function invokeCallback(expression, event, index, item) {
-        return this.params[expression] && this.params[expression]({
+        return this.params[expression] && this.vm[this.params[expression]]({
           event: event,
           index: index,
           item: item || undefined,

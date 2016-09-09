@@ -1,46 +1,46 @@
 <template lang="html">
   <div class="row horizontal">
-    <div class="alert alert-success" role="alert">Instructions: Drag & drop the horizontal items to move them around.</div>
-      <div v-for="container in lists" class="col-md-4">
-          <div class="panel panel-vue">
+    <div class="alert alert-success" role="alert">Instructions: Drag & drop the items or containers to move them around.</div>
+    <div v-for="container in lists" class="col-md-4">
+      <div class="panel panel-vue">
+        <div class="panel-heading">
+            <h3 class="panel-title">Dropzone {{$index+1}}</h3>
+        </div>
+        <ul class="panel-body container-list"
+            v-dnd-list
+            :dnd-list="container"
+            :dnd-allowed-types="['containerType']"
+            :dnd-external-sources="true">
+          <li class="panel panel-vue padding"
+              v-for="list in container"
+              v-dnd-draggable
+              :dnd-draggable="list"
+              :dnd-index="$index"
+              :dnd-data="container"
+              :dnd-type="'containerType'"
+              dnd-effect-allowed="copyMove">
               <div class="panel-heading">
-                  <h3 class="panel-title">Dropzone {{$index+1}}</h3>
+                  <h3 class="panel-title">container {{$index+1}}</h3>
               </div>
-              <ul class="panel-body container-list"
-                  v-dnd-list
-                  :dnd-list="container"
-                  :dnd-allowed-types="['containerType']"
-                  :dnd-external-sources="true">
-                <li class="panel panel-vue padding"
-                    v-for="list in container"
-                    v-dnd-draggable
-                    :dnd-draggable="list"
-                    :dnd-index="$index"
-                    :dnd-data="container"
-                    :dnd-type="'containerType'"
-                    dnd-effect-allowed="copyMove">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">container {{$index+1}}</h3>
-                    </div>
-                    <div class="panel-body">
-                      <ul v-dnd-list class="item-list"
-                          :dnd-list="list"
-                          :dnd-horizontal-list="true"
-                          :dnd-allowed-types="['itemType']"
-                          :dnd-external-sources="true">
-                        <li v-for="item in list" class="item"
-                            v-dnd-draggable
-                            :dnd-draggable="item"
-                            :dnd-type="'itemType'"
-                            dnd-effect-allowed="copyMove"
-                            :dnd-index="$index"
-                            :dnd-data="list">{{item.label}}</li>
-                      </ul>
-                    </div>
-                </div>
+              <div class="panel-body">
+                <ul v-dnd-list class="item-list"
+                    :dnd-list="list"
+                    :dnd-horizontal-list="true"
+                    :dnd-allowed-types="['itemType']"
+                    :dnd-external-sources="true">
+                  <li v-for="item in list" class="item"
+                      v-dnd-draggable
+                      :dnd-draggable="item"
+                      :dnd-type="'itemType'"
+                      dnd-effect-allowed="copyMove"
+                      :dnd-index="$index"
+                      :dnd-data="list">{{item.label}}</li>
+                </ul>
               </div>
-          </div>
+          </ul>
       </div>
+    </div>
+    </div>
   </div>
 </template>
 
@@ -142,7 +142,7 @@ export default {
     width: 50px;
     height: 50px;
     margin: 10px;
-    background: #4899A1;
+    background: #55A1A8;
     text-align: center;
     line-height: 20px;
     padding: 5px;

@@ -1,26 +1,27 @@
 <template>
   <div class="row simpleDemo">
-    <div class="alert alert-success" role="alert">Instructions: Drag & drop the list items to move them around.</div>
-      <div v-for="(listName, list) in lists" class="col-md-4">
-          <div class="panel panel-vue">
-              <div class="panel-heading">
-                  <h3 class="panel-title">List {{listName}}</h3>
-              </div>
-              <div class="panel-body">
-                <ul v-dnd-list :dnd-list="list" :dnd-horizontal-list="false">
-                    <li v-dnd-draggable v-for="item in list"
-                        :dnd-draggable="item"
-                        :dnd-index="$index"
-                        :dnd-data="list"
-                        dnd-effect-allowed="move"
-                        v-bind:class="{'selected': selected === item}"
-                        >
-                        {{item.label}}
-                    </li>
-                </ul>
-              </div>
-          </div>
-      </div>
+    <div class="alert alert-success" role="alert">Instructions: Drag & drop the list items to move them around, or just click to select them.</div>
+    <div v-for="(listName, list) in lists" class="col-md-4">
+        <div class="panel panel-vue">
+            <div class="panel-heading">
+                <h3 class="panel-title">List {{listName}}</h3>
+            </div>
+            <div class="panel-body">
+              <ul v-dnd-list :dnd-list="list" :dnd-horizontal-list="false">
+                  <li v-dnd-draggable v-for="item in list"
+                      :dnd-draggable="item"
+                      :dnd-index="$index"
+                      :dnd-data="list"
+                      dnd-selected="selectedEvent"
+                      dnd-effect-allowed="move"
+                      v-bind:class="{'selected': selected === item}">
+                      {{item.label}}
+                  </li>
+                  <li class="dndPlaceholder red">Custom placeholder</li>
+              </ul>
+            </div>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -74,6 +75,11 @@ export default {
         ]
       }
     }
+  },
+  methods: {
+    selectedEvent: function(item){
+      this.selected = item;
+    }
   }
 }
 </script>
@@ -121,6 +127,10 @@ export default {
     display: block;
     background-color: #eee;
     min-height: 41px;
+}
+
+.simpleDemo ul[dnd-list] .dndPlaceholder.red{
+  color: #F26B63;
 }
 
 /**
