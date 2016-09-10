@@ -1,6 +1,9 @@
 <template>
   <div class="row simpleDemo">
-    <div class="alert alert-success" role="alert">Instructions: Drag & drop the list items to move them around, or just click to select them.</div>
+    <div class="alert alert-success" role="alert">
+      Instructions: Drag & drop the list items to move them around, or just click to select them.
+      <a class="source-link" href="https://github.com/Alex-fun/vue-drag-and-drop-list/blob/master/demo/src/views/simple.vue">View source</a>
+    </div>
     <div v-for="(listName, list) in lists" class="col-md-4">
         <div class="panel panel-vue">
             <div class="panel-heading">

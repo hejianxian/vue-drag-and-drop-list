@@ -15,7 +15,7 @@
           <h3 class="center"># Demo</h3>
           <nav class="menus">
             <ul>
-              <li><a v-link="{ path: '/' }">Nested Containers</a></li>/
+              <li><a v-link="{ path: '/nested' }">Nested Containers</a></li>/
               <li><a v-link="{ path: '/simple' }">Simple Demo</a></li>/
               <li><a v-link="{ path: '/item-types' }">Item Types</a></li>/
               <li><a v-link="{ path: '/handler' }">Handler</a></li>/
@@ -206,6 +206,10 @@ nav.menus{
 
 .v-link-active {
   color: @base-color;
+}
+
+a.source-link{
+  text-decoration: underline;
 }
 
 </style>

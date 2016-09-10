@@ -1,6 +1,9 @@
 <template lang="html">
   <div class="row horizontal">
-    <div class="alert alert-success" role="alert">Instructions: Drag & drop the items or containers to move them around.</div>
+    <div class="alert alert-success" role="alert">
+      Instructions: Drag & drop the items or containers to move them around.
+      <a class="source-link" href="https://github.com/Alex-fun/vue-drag-and-drop-list/blob/master/demo/src/views/horizontal.vue">View source</a>
+    </div>
     <div v-for="container in lists" class="col-md-4">
       <div class="panel panel-vue">
         <div class="panel-heading">

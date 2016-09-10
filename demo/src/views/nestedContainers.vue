@@ -2,6 +2,7 @@
   <div class="row nestedDemo">
     <div class="alert alert-success" role="alert">
       Instructions: In this demo you can not only drag & drop list items, but also containers, which can contain list items or other containers themselves. To create new elements, use the toolbar on the right. If this is more than you need, check out the simple list demo.
+      <a class="source-link" href="https://github.com/Alex-fun/vue-drag-and-drop-list/blob/master/demo/src/views/nestedContainers.vue">View source</a>
     </div>
     <div v-for="(zone, list) in dropzones" class="col-md-5">
       <div class="panel panel-vue">

@@ -2,6 +2,7 @@
   <div class="row handleDemo">
     <div class="alert alert-success">
       Instructions: Drag & drop the handler to move them around.
+      <a class="source-link" href="https://github.com/Alex-fun/vue-drag-and-drop-list/blob/master/demo/src/views/handler.vue">View source</a>
     </div>
       <div v-for="(listName, list) in lists" class="col-md-4">
           <div class="panel panel-vue">
@@ -33,7 +34,7 @@
 
 <script>
 export default {
-  data(){    
+  data(){
     return {
       "lists": {
         "A": [

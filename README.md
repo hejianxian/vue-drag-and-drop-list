@@ -36,16 +36,23 @@ Vue.use(vueDragAndDropList);
 
 or include as an inline script.
 
-## Directives
+## Required CSS styles
+Both the dnd-list and it's children require relative positioning, so that the directive can determine the mouse position relative to the list and thus calculate the correct drop position.
+
+```css
+ul[dnd-list], ul[dnd-list] > li {
+    position: relative;
+}
+```
+
+## Wiki
 
 you should read the [Vue directive doc](http://vuejs.org/guide/custom-directive.html) first.
 
-* dnd-draggable
-* dnd-list
-* dnd-nodrag
-* dnd-handle
-
-doc comming soon！
+* [dnd-draggable](https://github.com/Alex-fun/vue-drag-and-drop-list/wiki/dnd-draggable)
+* [dnd-list](https://github.com/Alex-fun/vue-drag-and-drop-list/wiki/dnd-list)
+* [dnd-nodrag](https://github.com/Alex-fun/vue-drag-and-drop-list/wiki/dnd-nodrag)
+* [dnd-handle](https://github.com/Alex-fun/vue-drag-and-drop-list/wiki/dnd-handle)
 
 ## Development
 
