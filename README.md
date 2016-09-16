@@ -12,6 +12,13 @@
 * [Horizontal Items](https://hejx.herokuapp.com/vue-dndl/#!/horizontal)
 
 
+## Not supported VueJS 2.0
+[Directive interface change](https://github.com/vuejs/vue/issues/2873)
+
+In general, in 2.0 directives have a greatly reduced scope of responsibility: they are now only used for applying low-level direct DOM manipulations. In most cases, you should prefer using Components as the main code-reuse abstraction.
+
+This mean it should be a component. My mistake.😭
+
 ## Supported browsers
 
 IE9+ and all modern browsers are supported.
