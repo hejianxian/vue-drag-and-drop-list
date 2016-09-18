@@ -81,7 +81,7 @@ npm run dev // webpack
 ```
 See all demos source code in 'views/*.vue' file.
 
-## Thank
+## Thanks
 
 [angular-drag-and-drop-lists](https://github.com/marceljuenemann/angular-drag-and-drop-lists)
 
