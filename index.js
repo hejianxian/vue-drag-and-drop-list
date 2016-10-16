@@ -10,7 +10,7 @@ DragAndDropList.install = function(Vue) {
     // css: dragging, draggingSource
     paramWatchers: {
       dndDisableIf: function (val, oldVal) {
-        this.el.setAttribute('draggable', val);
+        this.el.setAttribute('draggable', !val);
       }
     },
     bind: function () {
@@ -110,7 +110,9 @@ DragAndDropList.install = function(Vue) {
         return false;
       }
 
-      this.el.setAttribute('draggable', true);
+      var status = true;
+      if (this.params.dndDisableIf) status = false;
+      this.el.setAttribute('draggable', status);
       this.el.addEventListener('dragstart', this.handleDragstart, false);
       this.el.addEventListener('dragend', this.handleDragend, false);
       this.el.addEventListener('click', this.handleClick, false);

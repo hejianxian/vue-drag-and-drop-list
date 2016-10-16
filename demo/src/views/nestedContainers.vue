@@ -14,8 +14,9 @@
             :dnd-list="list"
             dnd-inserted="inserted"
             dnd-effect-allowed="move"
+            :dnd-disable-if="disable"
             :dnd-external-sources="true">
-          <list v-for="item in list" :item="item" :list="list" :index="$index" :selected.sync="selected"></list>
+          <list v-for="item in list" :item="item" :list="list" :index="$index" :selected.sync="selected" :disable.sync="disable"></list>
         </ul>
       </div>
     </div>
@@ -55,6 +56,18 @@
           </div>
         </div>
       </div>
+      <div class="new-elements disable-element">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+              <h3 class="panel-title">Toggle Disable</h3>
+          </div>
+          <div class="panel-body">
+            <div class="dnd-button" @click="toggleDisable">
+                Disable: {{disable}}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -68,6 +81,7 @@ export default {
     return {
       selected: null,
       templates: {type: "new element", id: 1},
+      disable: false,
       dropzones: {
         "A": [
           {
@@ -152,6 +166,9 @@ export default {
     },
     inserted(data){
       // console.log(data);
+    },
+    toggleDisable() {
+      this.disable = !this.disable;
     }
   },
   components: {
@@ -257,6 +274,12 @@ export default {
     background-color: #41B883;
     color: #fff;
     cursor: move;
+}
+
+.disable-element .dnd-button{
+    background-color: #E32822;
+    border: 1px solid #E32822;
+    cursor: pointer;
 }
 
 .selected{

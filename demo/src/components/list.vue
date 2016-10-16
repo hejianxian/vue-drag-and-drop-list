@@ -2,6 +2,7 @@
   <li v-dnd-draggable
       :dnd-draggable="item"
       :dnd-index="index"
+      :dnd-disable-if="disable"
       dnd-selected="selectedEvent"
       v-bind:class="{'selected': selected === item, 'has-container': item.type === 'container'}"
       :dnd-data="list">
@@ -12,8 +13,9 @@
       <div class="panel-body">
         <ul v-dnd-list
             :dnd-list="item.columns"
+            :dnd-disable-if="disable"
             :dnd-external-sources="true">
-          <list v-for="col in item.columns" :item="col" :list="item.columns" :index="$index" :selected.sync="selected"></list>
+          <list v-for="col in item.columns" :item="col" :list="item.columns" :index="$index" :selected.sync="selected" :disable.sync="disable"></list>
         </ul>
       </div>
     </div>
@@ -26,7 +28,7 @@
 <script>
 export default {
   name: 'list',
-  props: ['item', 'list', 'index', 'selected'],
+  props: ['item', 'list', 'index', 'selected', 'disable'],
   methods: {
     selectedEvent(item){
       this.selected = item;

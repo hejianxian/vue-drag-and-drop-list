@@ -36,7 +36,8 @@ export default {
       "lists": {
         "A": [
           {
-            "label": "Item A1"
+            "label": "Item A1",
+            "disable": false
           },
           {
             "label": "Item A2"
