@@ -17,6 +17,9 @@
                       :dnd-data="list"
                       dnd-selected="selectedEvent"
                       dnd-effect-allowed="move"
+                      dnd-dragstart="handleDragstart"
+                      dnd-dragend="handleDragend"
+                      dnd-canceled="handleCanceled"
                       v-bind:class="{'selected': selected === item}">
                       {{item.label}}
                   </li>
@@ -83,6 +86,15 @@ export default {
   methods: {
     selectedEvent: function(item){
       this.selected = item;
+    },
+    handleDragstart: function() {
+      console.log('handleDragstart');
+    },
+    handleDragend: function() {
+      console.log('handleDragend');
+    },
+    handleCanceled: function() {
+      console.log('handleCanceled');
     }
   }
 }
