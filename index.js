@@ -42,7 +42,7 @@ DragAndDropList.install = function(Vue) {
 
         // Try setting a proper drag image if triggered on a dnd-handle (won't work in IE).
         if (event._dndHandle && event.dataTransfer.setDragImage) {
-          event.dataTransfer.setDragImage(this.el, event._dndHandleLeft - this.el.getBoundingClientRect().left, event._dndHandleTop - this.el.getBoundingClientRect().top);
+          event.dataTransfer.setDragImage(this.el, event._dndHandleLeft, event._dndHandleTop);
         }
 
         // Invoke callback
@@ -413,13 +413,14 @@ DragAndDropList.install = function(Vue) {
   });
 
   Vue.directive('dnd-handle', {
+    params: ['dnd-handle-left', 'dnd-handle-top'],
     bind: function () {
-
+      
       this.handle = function(event){
         event = event.originalEvent || event;
         event._dndHandle = true;
-        event._dndHandleLeft = this.el.getBoundingClientRect().left;
-        event._dndHandleTop = this.el.getBoundingClientRect().top;
+        event._dndHandleLeft = this.params.dndHandleLeft || 0;
+        event._dndHandleTop = this.params.dndHandleTop || 0;
       }.bind(this);
 
       this.el.setAttribute('draggable', true);

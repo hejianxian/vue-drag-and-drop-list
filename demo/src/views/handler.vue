@@ -19,7 +19,11 @@
                         v-bind:class="{'selected': selected === item}"
                         >
                         <div v-dnd-nodrag class="nodrag">
-                          <div v-dnd-handle class="handle"></div>
+                          <div v-dnd-handle
+                               dnd-handle-left="20"
+                               dnd-handle-top="20"
+                               class="handle">
+                          </div>
                           <div class="name">
                               {{item.label}}
                           </div>
