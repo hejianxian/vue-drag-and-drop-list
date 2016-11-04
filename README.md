@@ -1,6 +1,4 @@
-#vue-drag-and-drop-list
-
-[![npm](https://img.shields.io/npm/v/vue-drag-and-drop-list.svg?maxAge=2592000?style=flat-square)]()
+#vue-drag-and-drop-list  [![npm](https://img.shields.io/npm/v/vue-drag-and-drop-list.svg?maxAge=2592000?style=flat-square)]()
 
 > Vue directives that allow you to build sortable lists with the native HTML5 drag & drop API. Supports nested lists for building trees and other fancy structures.
 
