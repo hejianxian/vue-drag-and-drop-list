@@ -31,7 +31,11 @@ IE9+ and all modern browsers are supported.
 ```bash
 npm install vue-drag-and-drop-list --save
 ```
+or
 
+```bash
+yarn add vue-drag-and-drop-list
+```
 ## Usage
 
 ```js
