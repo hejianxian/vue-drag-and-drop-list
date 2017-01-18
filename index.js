@@ -20,7 +20,7 @@ DragAndDropList.install = function(Vue) {
 
         var dndDraggable = JSON.stringify(this.params.dndDraggable);
         // Check whether the element is draggable, since dragstart might be triggered on a child.
-        if (dndDraggable == 'false') return true;
+        if (dndDraggable == 'false' || this.params.dndDisableIf) return true;
 
         // Serialize the data associated with this element. IE only supports the Text drag type
         event.dataTransfer.setData("Text", dndDraggable);

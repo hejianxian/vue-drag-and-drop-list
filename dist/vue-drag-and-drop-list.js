@@ -1,6 +1,6 @@
 /*!
  * Vue-drag-and-drop-list.js v0.8.3
- * (c) 2016 Hejx
+ * (c) 2017 Hejx
  * Released under the MIT License.
  * https://github.com/Alex-fun/vue-drag-and-drop-list#readme
  */
@@ -32,7 +32,7 @@ DragAndDropList.install = function(Vue) {
 
         var dndDraggable = JSON.stringify(this.params.dndDraggable);
         // Check whether the element is draggable, since dragstart might be triggered on a child.
-        if (dndDraggable == 'false') return true;
+        if (dndDraggable == 'false' || this.params.dndDisableIf) return true;
 
         // Serialize the data associated with this element. IE only supports the Text drag type
         event.dataTransfer.setData("Text", dndDraggable);

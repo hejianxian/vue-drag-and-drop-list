@@ -1,6 +1,6 @@
 {
   "name": "vue-drag-and-drop-list",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "A Vue.js directives with the HTML5 drag & drop API.",
   "main": "dist/vue-drag-and-drop-list.js",
   "directories": {
