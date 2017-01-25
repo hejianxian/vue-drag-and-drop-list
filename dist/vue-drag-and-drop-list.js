@@ -1,8 +1,8 @@
 /*!
- * Vue-drag-and-drop-list.js v0.8.3
+ * Vue-drag-and-drop-list.js v1.0.0
  * (c) 2017 Hejx
  * Released under the MIT License.
- * https://github.com/Alex-fun/vue-drag-and-drop-list#readme
+ * https://github.com/hejianxian/vue-drag-and-drop-list#readme
  */
 
 (function (global, factory) {
