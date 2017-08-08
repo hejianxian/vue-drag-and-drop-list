@@ -15,7 +15,7 @@
 
 In general, in 2.0 directives have a greatly reduced scope of responsibility: they are now only used for applying low-level direct DOM manipulations. In most cases, you should prefer using Components as the main code-reuse abstraction.
 
-This mean it should be a component. My mistake.
+**This mean it should be a component. You can view [vddl](https://github.com/hejianxian/vddl)**.
 
 ## Supported browsers
 
