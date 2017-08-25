@@ -2,7 +2,7 @@
 
 > Vue directives that allow you to build sortable lists with the native HTML5 drag & drop API. Supports nested lists for building trees and other fancy structures.
 
-### ** 😮 Now support 2.0, see [vddl](https://github.com/hejianxian/vddl) 👏👏**
+### 😮Now support 2.0, see [vddl](https://github.com/hejianxian/vddl) 👏👏 
 
 ## Demo
 * [Nested Containers](https://hejx.herokuapp.com/vue-dndl/#!/)
